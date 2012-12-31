@@ -61,7 +61,7 @@ In the future, I may choose to make these settings configurable.
 
 ### Using this app ###
 
-I highly recommend setting up an android project and modify this code for your own use.
+I highly recommend setting up an android project and modifying this code for your own use.
 
 You might also consider trying using the apk file provided in this repository at /SkiApp.apk.
 This APK file is only built for Android 2.3.3 (gingerbread) so I cannot gaurentee usability on
