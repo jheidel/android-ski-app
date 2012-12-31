@@ -48,6 +48,16 @@ Additionally, it may not be possible to keep the screen on with certain Android 
 You can try reducing the wakelock to a partial wakelock and seeing whether or not the app is
 still functional.
 
+### Using this app ###
+
+I highly recommend setting up an android project and modifying this code for your own use.
+You might also consider trying using the apk file provided in this repository at /SkiApp.apk.
+This APK file is unsigned and is only built for Android 2.3.3 so I cannot gaurentee usability on
+any other Android phones.
+
+Additionally, the lack of configurable settings mentioned earlier may require you to program in
+new values.
+
 See this link for more information about this bug: http://nosemaj.org/android-persistent-sensors
 
 ### Future Improvements ###
