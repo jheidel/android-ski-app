@@ -48,6 +48,16 @@ Additionally, it may not be possible to keep the screen on with certain Android 
 You can try reducing the wakelock to a partial wakelock and seeing whether or not the app is
 still functional.
 
+
+### Future Improvements ###
+
+Most of the settings are hardcoded. This includes
+ - Threshold value for the magnetometer
+ - Timing for skipping a song
+ - Interval of time announcements
+
+In the future, I may choose to make these settings configurable.
+
 ### Using this app ###
 
 I highly recommend setting up an android project and modifying this code for your own use.
@@ -60,11 +70,3 @@ new values.
 
 See this link for more information about this bug: http://nosemaj.org/android-persistent-sensors
 
-### Future Improvements ###
-
-Most of the settings are hardcoded. This includes
- - Threshold value for the magnetometer
- - Timing for skipping a song
- - Interval of time announcements
-
-In the future, I may choose to make these settings configurable.
