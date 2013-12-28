@@ -1,19 +1,15 @@
 package com.jeffheidel.skiapp;
 
-import java.util.Locale;
-
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Vibrator;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 
-public class MusicController implements OnInitListener {
+public class MusicController {
 	private final static String TAG = "SKIAPP_MusicControl";
 	private Context parent;
-	private TextToSpeech tts;
+	private TTSSpeaker tts;
 	private TimeAnnounceService tas = null;
 	private TimeAnnouncer ta;
 	
@@ -21,7 +17,7 @@ public class MusicController implements OnInitListener {
 	
 	public MusicController(Context parent) {
 		this.parent = parent;
-		tts = new TextToSpeech(parent, this);
+		tts = TTSSpeaker.getSpeaker(parent);
 		ta = new TimeAnnouncer(parent);
 	}
 
@@ -49,12 +45,12 @@ public class MusicController implements OnInitListener {
 		AudioManager manager = (AudioManager) parent
 				.getSystemService(Context.AUDIO_SERVICE);
 		if (manager.isMusicActive()) {
-			tts.speak("music pause", TextToSpeech.QUEUE_FLUSH, null);
+			tts.speak("music pause", false);
 			if (ANNOUNCE_ON_PAUSE) {
 				ta.announceTime();
 			}
 		} else {
-			tts.speak("music play", TextToSpeech.QUEUE_FLUSH, null);
+			tts.speak("music play", false);
 		}
 
 		Log.d(TAG, "Music has been pause / play toggled");
@@ -71,16 +67,7 @@ public class MusicController implements OnInitListener {
 		intent = new Intent("com.android.music.musicservicecommand.next");
 		parent.getApplicationContext().sendBroadcast(intent);
 		vibrate(150);
-		tts.speak("music skip", TextToSpeech.QUEUE_FLUSH, null);
-	}
-
-	public void onInit(int status) {
-		if (status == TextToSpeech.SUCCESS) {
-			tts.setLanguage(Locale.US);
-			Log.i(TAG, "TTS Init Success");
-		} else {
-			Log.e(TAG, "TTS Initilization Failed");
-		}
+		tts.speak("music skip", false);
 	}
 
 }
