@@ -7,9 +7,11 @@
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="10" />
-    <uses-permission android:name="android.permission.SIGNAL_PERSISTENT_PROCESSES"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <uses-permission android:name="android.permission.SIGNAL_PERSISTENT_PROCESSES" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -25,8 +27,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:enabled="true" android:name="com.jeffheidel.skiapp.MagService" />
-        <service android:enabled="true" android:name="com.jeffheidel.skiapp.TimeAnnounceService" />
+
+        <service
+            android:name="com.jeffheidel.skiapp.MagService"
+            android:enabled="true" />
+        <service
+            android:name="com.jeffheidel.skiapp.TimeAnnounceService"
+            android:enabled="true" />
+
+        <activity
+            android:name="com.jeffheidel.skiapp.SettingsMenuActivity"
+            android:label="@string/title_activity_settings_menu" >
+        </activity>
     </application>
 
 </manifest>

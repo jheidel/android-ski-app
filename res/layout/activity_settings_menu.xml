@@ -1,0 +1,44 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:key="pref_mag_sense_settings"
+        android:title="Magnetic Sensing Settings" >
+
+        <com.hlidskialf.android.preference.SeekBarPreference
+            android:defaultValue="125"
+            android:dialogMessage="Select a magnetic threshold value:"
+            android:key="mag_thresh"
+            android:max="300"
+            android:summary="Select to change the threshold value."
+            android:text=" μT"
+            android:title="Magnetic Threshold" />
+        
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_time_announce_settings"
+        android:title="Time Announcement Settings" >
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="announce_on_pause"
+            android:summary="Announce the time when music is paused."
+            android:title="Pause Announce" />
+
+        <com.hlidskialf.android.preference.SeekBarPreference
+            android:defaultValue="10"
+            android:dialogMessage="Select the announcement interval:"
+            android:key="announce_interval"
+            android:max="60"
+            android:summary="Sealect to change time between time announcements"
+            android:text=" min"
+            android:title="Time Announce Interval" />
+        
+         <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="stop_on_unplug"
+            android:summary="Stop announcing time when headphones are unplugged. This feature is still buggy."
+            android:title="Stop on Headset Unplug" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

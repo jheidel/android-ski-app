@@ -5,12 +5,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -19,13 +23,17 @@ import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 import android.widget.Toast;
 
-public class TimeAnnounceService extends Service implements OnInitListener {
+
+public class TimeAnnounceService extends Service {
 
 	public static final int ALARM_INTERVAL = 600;
-	public static final int ANNOUNCE_MIN_INTERVAL = 10;
+	public static int ANNOUNCE_MIN_INTERVAL = 10;
 
-	public static final String TAG = "SKIAPP_TimeAnnounce";
-	private TextToSpeech tts;
+
+	public static final String TAG = "SKIAPP_TimeAnnounceService";
+	
+	private TimeAnnouncer ta;
+	
 	private int last_announce = -1;
 	private boolean first_announce = true;
 
@@ -34,26 +42,21 @@ public class TimeAnnounceService extends Service implements OnInitListener {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	private Handler mHandler = new Handler();
-
+	
 	// Run periodically; must announce when applicable
 	private void periodicRun() {
 		Calendar c = Calendar.getInstance();
 		Date d = c.getTime();
 		int min = d.getMinutes();
 		int hours = d.getHours();
-
 		int minOfDay = hours * 60 + min;
-
 		if (first_announce
 				|| (minOfDay % ANNOUNCE_MIN_INTERVAL == 0 && last_announce != minOfDay)) {
 			last_announce = minOfDay;
 			first_announce = false;
-			SimpleDateFormat sdf = new SimpleDateFormat("h mm a");
-			String currentDateandTime = sdf.format(new Date());
-			Log.d(TAG, "Announcing new time");
-			tts.speak(currentDateandTime, TextToSpeech.QUEUE_FLUSH, null);
+			ta.announceTime();
 		}
 	}
 
@@ -71,7 +74,8 @@ public class TimeAnnounceService extends Service implements OnInitListener {
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 				new Intent(this, SkiMainActivity.class), 0);
 		notification.setLatestEventInfo(this, "Ski App Time Announcement",
-				"Now announcing time periodically.", contentIntent);
+				"Announcing time periodically.", contentIntent);
+		notification.flags |= Notification.FLAG_ONGOING_EVENT;
 		nm.notify(2, notification);
 	}
 
@@ -87,7 +91,7 @@ public class TimeAnnounceService extends Service implements OnInitListener {
 	@Override
 	public void onCreate() {
 		Log.d(TAG, "onCreate");
-		tts = new TextToSpeech(this, this);
+		ta = new TimeAnnouncer(this);
 		nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		mHandler.postDelayed(periodicTask, 1);
 		Toast.makeText(this, "Time Announcements Started", Toast.LENGTH_SHORT)
@@ -96,7 +100,7 @@ public class TimeAnnounceService extends Service implements OnInitListener {
 		
 		pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
-		wl.acquire();
+		wl.acquire();	
 	}
 
 	@Override
@@ -110,13 +114,5 @@ public class TimeAnnounceService extends Service implements OnInitListener {
 		Log.d(TAG, "onDestroy");
 	}
 
-	@Override
-	public void onInit(int status) {
-		if (status == TextToSpeech.SUCCESS) {
-			tts.setLanguage(Locale.US);
-			Log.i(TAG, "TTS Init Success");
-		} else {
-			Log.e(TAG, "TTS Initilization Failed");
-		}
-	}
+	
 }

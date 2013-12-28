@@ -103,7 +103,8 @@ public class MagService extends Service implements SensorEventListener {
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 				new Intent(this, SkiMainActivity.class), 0);
 		notification.setLatestEventInfo(this, "Ski App Magnetic Music Control",
-				"Service running & waiting for events...", contentIntent);
+				"Monitoring magnetic field.", contentIntent);
+		notification.flags |= Notification.FLAG_ONGOING_EVENT;
 		nm.notify(0, notification);
 	}
 

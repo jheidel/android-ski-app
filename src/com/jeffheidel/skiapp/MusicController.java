@@ -14,10 +14,15 @@ public class MusicController implements OnInitListener {
 	private final static String TAG = "SKIAPP_MusicControl";
 	private Context parent;
 	private TextToSpeech tts;
-
+	private TimeAnnounceService tas = null;
+	private TimeAnnouncer ta;
+	
+	public static boolean ANNOUNCE_ON_PAUSE = true;
+	
 	public MusicController(Context parent) {
 		this.parent = parent;
 		tts = new TextToSpeech(parent, this);
+		ta = new TimeAnnouncer(parent);
 	}
 
 	// vibration option used for haptic feedback of music control
@@ -27,12 +32,27 @@ public class MusicController implements OnInitListener {
 		v.vibrate(time);
 	}
 
+	public void setTimeAnnounceOnPause(TimeAnnounceService tas) {
+		this.tas = tas;
+	}
+	
+	public boolean announcingOnPause() {
+		return tas != null;
+	}
+	
+	public void removeTimeAnnounceOnPause() {
+		this.tas = null;
+	}
+	
 	public void pauseMusic() {
 
 		AudioManager manager = (AudioManager) parent
 				.getSystemService(Context.AUDIO_SERVICE);
 		if (manager.isMusicActive()) {
 			tts.speak("music pause", TextToSpeech.QUEUE_FLUSH, null);
+			if (ANNOUNCE_ON_PAUSE) {
+				ta.announceTime();
+			}
 		} else {
 			tts.speak("music play", TextToSpeech.QUEUE_FLUSH, null);
 		}
@@ -42,7 +62,7 @@ public class MusicController implements OnInitListener {
 		intent = new Intent("com.android.music.musicservicecommand.togglepause");
 		parent.getApplicationContext().sendBroadcast(intent);
 		vibrate(150);
-
+		
 	}
 
 	public void skipMusic() {

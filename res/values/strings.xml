@@ -7,5 +7,6 @@
     <string name="magview">Field:</string>
     <string name="na">N/A</string>
     <string name="menutest">Menu Test</string>
+    <string name="title_activity_settings_menu">SettingsMenuActivity</string>
 
 </resources>
